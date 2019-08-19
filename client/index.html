@@ -1,0 +1,199 @@
+  <DOCTYPE html>
+    <html>
+      <head>
+        <title>Dev Advocate</title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width,initial-scale=1">
+
+     <!--Bootstrap & CSS-->
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+    <!--Google Fonts-->
+        <link href="https://fonts.googleapis.com/css?family=Raleway:300,300i,400,400i,500i,600,600i,700,700i,800,900" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,300i,400,400i,600i,700,900" rel="stylesheet">
+
+
+    <!--Font Awesome-->
+        <link rel="stylesheet" href="css/font-awesome.min.css">
+        <link rel="stylesheet" type="text/css" href="css/style.css">
+        </head>
+        <body>
+            <!--Header-->
+            <header class="header">
+          <div class="container">
+             <div class="row">
+              <div class="col-md-9">
+                <!--Title & Description-->
+               <h1>Rahmona Henry</h1>
+               <!-- <h5>Application for Developer Advocate Role</h5> -->
+               <h6><b>HubSpot Dublin - August 16th 2019</b></h6>
+             </div>
+          </div>
+        </div>
+  </header>
+  <section>
+<!-- Task Section-->
+    <div class="container">
+      <div class="row">
+        <div class="col-md-9">
+          <div class="section-title">
+            <h4>Task</h4>
+            <ol>
+              <li>Create a custom form that submits data to HubSpot through the Forms API</a></li>
+              <li>The submission must trigger a custom analytics event in HubSpot using the Events JavaScript API</li>
+              <li>Any errors in the form submission should be displayed to the user submitting out the form</li>
+          </ol>
+          <h4>API's</h4>
+          <ul>
+            <li><a href="https://developers.hubspot.com/docs/methods/forms/submit_form_v3"><u>Forms API</u></li></a>
+            <li><a href="https://developers.hubspot.com/docs/methods/tracking_code_api/identify_visitor"><u>Identify a Vistor API</u></li></a>
+            <li><a href="https://developers.hubspot.com/docs/methods/tracking_code_api/javascript_events_api"><u>Events JavaScript API</u></li></a>
+          </ul>
+         </div>
+       </div>
+      </div>
+    </div>
+</section>
+  <!-- Form Instructions-->
+       <div class="container">
+         <div class="row">
+           <div class="col-md-9">
+             <div class="section-explaination">
+               <h4>Please submit your details in the form below:</h4>
+               <h6><a href="https://app.hubspot.com/contacts/6282099/contacts/view/all/">View form submission data <u>here</u></a></h6>
+            </div>
+          </div>
+         </div>
+       </div>
+       <!--Form Section-->
+       <section>
+         <div class="container">
+           <div class="row">
+             <div class="col-md-6">
+          <form name="devForm" onsubmit="return validateForm()"action="/" method="POST">
+            <div class="form-group">
+            <b><label for="FirstName">First Name *</label></b>
+            <input type="text" class="form-control" name="firstname" placeholder="First Name" required="true">
+             </div>
+            <div class="form-group">
+            <b><label for="LastName">Last Name *</label></b>
+            <input type="text" class="form-control" name="lastname" placeholder="Last Name" required="true">
+             </div>
+            <div class="form-group">
+            <b><label for="Email">Email Address *</label></b>
+            <input type="email" class="form-control" name="email" placeholder="Email Address" required="true">
+           </div>
+            <input type="hidden" id="cookie" name="cookie" value="">
+            <input type="hidden" id="title" name="title" value="">
+            <input type="hidden" id="pageURL" name="pageURL" value="">
+            <input type="submit" id="submit" class="btn btn-primary btn-submit-now" value="submit">
+          </form>
+        </div>
+       </div>
+       </div>
+       </section>
+
+
+<!--Function to get the cookie from the browser after cookie banner is accepted-->
+<!--Logic to get page URL and title-->
+  <script>
+    function getCookie(cname) {
+          var name = cname + "=";
+          var decodedCookie = decodeURIComponent(document.cookie);
+          var ca = decodedCookie.split(';');
+          for (var i = 0; i < ca.length; i++) {
+              var c = ca[i];
+              while (c.charAt(0) == ' ') {
+                  c = c.substring(1);
+              }
+              if (c.indexOf(name) == 0) {
+                  return c.substring(name.length, c.length);
+              }
+          }
+          return "";
+      }
+
+  document.addEventListener('click', function(e) {
+            if (e.target && e.target.id == 'hs-eu-confirmation-button') {
+                console.log("Accepted Cookies");
+                var cookie = getCookie ('hubspotutk');
+               document.getElementById("cookie").value=cookie;
+               console.log(cookie);
+            }
+        });
+
+      var title = document.title;
+      document.getElementById("title").value=title;
+      // console.log(title)
+      var pageTitle = document.getElementsByTagName("title")[0];
+      console.log(pageTitle.innerHTML);
+
+      var pageURL = window.location.href;
+      document.getElementById("pageURL").value=pageURL;
+     console.log(pageURL);
+  </script>
+
+<!--Function to identify a visitor and store the details in the tracker-->
+  <script>
+     function getParameterByName(name) {
+         var match = RegExp('[?&]' + name + '=([^&]*)').exec(window.location.search);
+         return match && decodeURIComponent(match[1].replace(/\+/g, ' '));
+     }
+
+     var _hsq = window._hsq = window._hsq || [];
+     _hsq.push(["identify",{
+          email: getParameterByName("email")
+     }]);
+
+  </script>
+
+  <!--Event listener to fire custom event when the submit button is clicked and assign it to a contact-->
+  <script>
+    var _hsq = window._hsq = window._hsq || [];
+    var button = document.getElementById("submit");
+
+    function fireEvent(){
+      _hsq.push(["trackEvent", {
+        id: "000007235521",
+        value: 10
+      }]);
+      alert("Custom analytics event recorded!");
+      console.log("Submit button clicked");
+    }
+
+    button.addEventListener("click", fireEvent, false);
+
+
+  </script>
+
+<!--Additional Function to validate form data-->
+  <script>
+  function validateForm() {
+
+    var x = document.forms["devForm"]["email"].value;
+    var y = document.forms["devForm"]["firstname"].value;
+    var z = document.forms["devForm"]["lastname"].value;
+
+    if (x == "") {
+      alert("Email address must be entered before submitting the form.Thank You!");
+      return false;
+  }
+    if (y == "") {
+      alert("First name must be entered before submitting the form.Thank You!");
+      return false;
+  }
+    if (z == ""){
+      alert("Last name entered before submitting the form.Thank You!");
+      return false;
+
+  }
+  return(true);
+  }
+  </script>
+
+
+  <!-- Start of HubSpot Embed Code -->
+  <script type="text/javascript" id="hs-script-loader" async defer src="//js.hs-scripts.com/6282099.js"></script>
+  <!-- End of HubSpot Embed Code -->
+    </body>
+    </html>
